@@ -7,5 +7,4 @@
 
     <context:annotation-config/>
     <context:component-scan base-package="com.demo.study01"/>
-    <rpc-service:server id="server"/>
 </beans>
