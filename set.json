@@ -1,0 +1,71 @@
+{
+  // ====== 通用行为 ======
+  "general": {
+    "vimMode": false,
+    "preferredEditor": "code",      // 与 VS Code 联动
+    "autoAccept": false,            // 禁止自动执行命令，保平安
+    "disableUpdateNag": true        // 关闭版本升级提示
+  },
+
+  // ====== 界面 ======
+  "ui": {
+    "theme": "github",
+    "showLineNumbers": true,
+    "hideBanner": false
+  },
+
+  // ====== 模型与上下文 ======
+  "model": "gemini-2.5-pro",        // 2025-12 默认已可用
+  "contextCompressionThreshold": 0.8, // 长会话自动压缩阈值
+  "contextFileName": ["GEMINI.md", "AGENTS.md"], // 可多端复用
+
+  // ====== 工具 & 安全 ======
+  "tools": {
+    "sandbox": "docker",            // 也可 "firejail" 或 "none"
+    "exclude": ["write_file"],      // 黑名单，禁止直接写文件
+    "approvalMode": "safe"          // safe / yolo / manual
+  },
+
+  // ====== MCP 服务器：Java 三件套 ======
+  "mcp": {
+    "servers": {
+      "filesystem": {
+        "command": "npx",
+        "args": ["@modelcontextprotocol/server-filesystem", "--root", "${HOME}/IdeaProjects"]
+      },
+      "sqlite": {
+        "command": "npx",
+        "args": ["@modelcontextprotocol/server-sqlite", "--db-path", "${HOME}/IdeaProjects/data.db"]
+      },
+      "java-debug": {
+        "command": "java",
+        "args": ["-jar", "${HOME}/tools/mcp-java-debug.jar", "--port", "5050"],
+        "env": { "JAVA_HOME": "/usr/lib/jvm/java-17-openjdk-amd64" }
+      }
+    },
+    "allowed": ["filesystem", "sqlite", "java-debug"], // 白名单
+    "excluded": []                                     // 拒绝列表
+  },
+
+  // ====== 文件过滤（Git 感知） ======
+  "fileFiltering": {
+    "respectGitIgnore": true,
+    "enableRecursiveFileSearch": true,
+    "disableFuzzySearch": false
+  },
+
+  // ====== 项目级自动载入 ======
+  "includeDirectories": ["./src", "./docs", "./config"],
+
+  // ====== 代理（可选） ======
+  "proxy": {
+    "enabled": false,
+    "url": "http://127.0.0.1:7890"
+  },
+
+  // ====== 高级 ======
+  "advanced": {
+    "autoConfigureMemory": true,            // Node 堆自动扩容
+    "excludedEnvVars": ["DEBUG", "SECRET"]  // 不注入上下文
+  }
+}
